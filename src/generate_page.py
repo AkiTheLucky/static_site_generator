@@ -1,6 +1,7 @@
 from block_to_html import markdown_to_html_node
 import os
 
+
 def extract_title(markdown):
     first_line = markdown.split("\n")[0]
     if first_line.startswith("# ") is False:
@@ -9,7 +10,7 @@ def extract_title(markdown):
     return h1_header
 
 
-def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
+def generate_pages_recursive(basepath, dir_path_content, template_path, dest_dir_path):
 
     if os.path.isfile(dir_path_content):
         generate_page(dir_path_content, template_path, os.path.join(dest_dir_path, "index.html"))
@@ -19,14 +20,14 @@ def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
     for pathie in list_of_paths:
         src_path = os.path.join(dir_path_content, pathie)
         if os.path.isdir(src_path):
-            generate_pages_recursive(src_path, template_path, os.path.join(dest_dir_path, pathie))
+            generate_pages_recursive(basepath, src_path, template_path, os.path.join(dest_dir_path, pathie))
 
         elif os.path.isfile(src_path) and src_path.endswith(".md"):  
             dest_file_path = os.path.join(dest_dir_path, pathie)
             dest_file_path = dest_file_path.replace(".md",".html")
-            generate_page(src_path,template_path, dest_file_path)
+            generate_page(basepath, src_path,template_path, dest_file_path)
 
-def generate_page(from_path, template_path, dest_path):
+def generate_page(basepath, from_path, template_path, dest_path):
     print(f"Generating page from {from_path} to {dest_path} using {template_path}")
     #read md file index and store contents in variable
     
@@ -38,7 +39,7 @@ def generate_page(from_path, template_path, dest_path):
     md_as_html_string = markdown_to_html_node(md_content).to_html()
     page_title = extract_title(md_content)
     
-    final_html_page = template_content.replace("{{ Title }}", page_title).replace("{{ Content }}", md_as_html_string)
+    final_html_page = template_content.replace("{{ Title }}", page_title).replace("{{ Content }}", md_as_html_string).replace('href="/',f'href="{basepath}').replace('src="/',f'src="{basepath}')
 
     dir_portion = os.path.dirname(dest_path)
     if dir_portion:
