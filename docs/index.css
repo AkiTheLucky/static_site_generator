@@ -1,130 +1,220 @@
+/* 1. RESET & VARIABLES */
+*, *::before, *::after { 
+  box-sizing: border-box; 
+  margin: 0; 
+  padding: 0; 
+}
+
+:root {
+  /* The screenshot uses an off-white/cream background with pitch-black text */
+  --bg:          #f9f9f8; 
+  --text:        #000000;
+  --muted:       #666666;
+  --card-bg-tan: #b0ab99; /* For that middle search feature container */
+  --font:        'Inter', 'Satoshi', system-ui, sans-serif;
+  --max-width:   1200px;
+}
+
+/* 2. GLOBAL STYLES */
 body {
-  background-color: #1f1c25;
-  color: #f0e6d1;
-  font-family: "Luminari", "Georgia", serif;
-  line-height: 1.7;
-  margin: 0;
-  padding: 20px;
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  line-height: 1.4;
+  overflow-x: hidden;
+  padding: 0 2rem;
 }
 
-b {
-  font-weight: 900;
+/* 3. LAYOUT UTILITIES */
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  width: 100%;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  color: #dda15e;
-  margin-top: 24px;
-  margin-bottom: 16px;
-  text-shadow: 2px 2px 4px #000;
+.section {
+  padding: 8rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* 4. TYPOGRAPHY (Cosmos uses tight, high-contrast, bold headers) */
+h1, h2, h3 {
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
 }
 
 h1 {
-  font-size: 2.5em;
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  margin-bottom: 1.5rem;
 }
 
 h2 {
-  font-size: 2em;
+  font-size: clamp(2rem, 4vw, 3rem);
+  margin-bottom: 2rem;
 }
 
-h3 {
-  font-size: 1.5em;
+p {
+  color: var(--muted);
+  font-size: 1.1rem;
+  max-width: 45ch;
+  margin: 0 auto;
 }
 
-h4,
-h5,
-h6 {
-  font-size: 1.2em;
+/* 5. HERO SECTION & FLOATING IMAGES COLLAGE */
+.hero-section {
+  position: relative;
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
 }
 
-a {
-  color: #e0a96d;
+/* Use this wrapper to scatter tiny images all over the background like the screenshot */
+.floating-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.8;
+}
+
+.floating-bg img {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+/* Sample coordinates to match the scattered image effect */
+.floating-bg img:nth-child(1) { top: 10%; left: 10%; transform: rotate(-5deg); }
+.floating-bg img:nth-child(2) { top: 15%; right: 12%; transform: rotate(8deg); }
+.floating-bg img:nth-child(3) { bottom: 20%; left: 15%; transform: rotate(12deg); }
+.floating-bg img:nth-child(4) { bottom: 15%; right: 10%; transform: rotate(-10deg); }
+
+/* 6. BUTTONS (The pill shape from the screenshot) */
+.btn-pill {
+  background: var(--text);
+  color: var(--bg);
+  padding: 0.75rem 1.7rem;
+  border-radius: 50px;
   text-decoration: none;
-  border-bottom: 2px solid #e0a96d;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  display: inline-block;
+  margin-top: 1rem;
 }
 
-a:hover {
-  color: #f4a261;
-  border-color: #f4a261;
+.btn-pill:hover {
+  transform: scale(1.03);
+  opacity: 0.9;
 }
 
-ul,
-ol {
-  padding-left: 30px;
+/* 7. FEATURE: EVERY SEARCH OPENS A NEW WORLD */
+.feature-showcase {
+  background-color: var(--card-bg-tan);
+  width: 100%;
+  border-radius: 24px;
+  padding: 4rem 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  align-items: center;
 }
 
-code {
-  background-color: #3c3c42;
-  border-radius: 6px;
-  color: #e9c46a;
-  padding: 0.4em 0.6em;
-  font-family: "Courier New", monospace;
+.feature-showcase img {
+  width: 100%;
+  border-radius: 12px;
+  aspect-ratio: 4/3;
+  object-fit: cover;
 }
 
-pre code {
-  padding: 0;
+/* 8. GRID: SEARCH THE WAY YOU THINK */
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  width: 100%;
+  margin-top: 2rem;
 }
 
-pre {
-  background-color: #3c3c42;
-  border-radius: 6px;
-  padding: 1em;
-  overflow: auto;
-  box-shadow: 2px 2px 6px #000;
+.card {
+  border-radius: 20px;
+  overflow: hidden;
+  aspect-ratio: 4/5;
+  position: relative;
 }
 
-blockquote {
-  background-color: #2e2c35;
-  border-left: 4px solid #8d99ae;
-  padding-left: 2em;
-  margin-left: 0;
-  padding-top: 0.5em;
-  padding-bottom: 0.5em;
-  padding-right: 0.5em;
-  color: #ddd;
-  font-style: italic;
+.card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 6px;
-  border: 3px solid #3c3c42;
-  box-shadow: 3px 3px 6px #000;
+/* 9. SIDE-BY-SIDE SPLIT (Know what you're looking at) */
+.split-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  text-align: left;
 }
 
-::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
+.split-section .right-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-::-webkit-scrollbar-track {
-  background: #1f1c25;
-  border-radius: 6px;
+.split-section img {
+  width: 100%;
+  border-radius: 16px;
 }
 
-::-webkit-scrollbar-thumb {
-  background-color: #3c3c42;
-  border-radius: 6px;
-  border: 3px solid #1f1c25;
+/* 10. PARTNER LOGOS */
+.logo-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 3rem;
+  opacity: 0.4;
+  filter: grayscale(100%);
+  margin-top: 2rem;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background-color: #5a5466;
+.logo-cloud img {
+  height: 24px;
 }
 
-* {
-  scrollbar-width: thin;
-  scrollbar-color: #3c3c42 #1f1c25;
+/* 11. FOOTER (Massive Title) */
+.footer-brand {
+  font-size: clamp(4rem, 15vw, 12rem);
+  font-weight: 800;
+  text-align: center;
+  letter-spacing: -0.05em;
+  line-height: 0.8;
+  padding-bottom: 4rem;
+  width: 100%;
 }
 
-::-webkit-scrollbar-corner {
-  background: #1f1c25;
+/* RESPONSIVE BREAKPOINT */
+@media (max-width: 768px) {
+  .split-section {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .section {
+    padding: 4rem 0;
+  }
 }
