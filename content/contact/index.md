@@ -2,8 +2,6 @@
 
 [< Back Home](/)
 
-Give me a call anytime to chat about Tolkien!
+All requests are possible through my Linkedin!
 
-`555-555-5555`
-
-**"Váya márië."**
+`https://www.linkedin.com/in/akram-naser/`

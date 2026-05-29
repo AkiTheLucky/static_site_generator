@@ -26,7 +26,7 @@ def block_to_type(markdown):
         return BlockType.HTML_BLOCK
     if markdown.startswith(("# ","## ","### ","#### ","##### ","###### ",)):
         return BlockType.HEADING
-    if markdown.split("\n")[0].startswith("```") and markdown.split("\n")[-1].startswith("```"):
+    if markdown.strip().split("\n")[0].startswith("```") and markdown.strip().split("\n")[-1].startswith("```"):
         if len(markdown.split("\n")) > 1:
             return BlockType.CODE
     

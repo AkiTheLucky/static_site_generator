@@ -4,11 +4,11 @@ Learning how to code · Basel / Zürich
 
 M.Sc. International Economics. Learning how to code stuff is fun. Give job pls.
 
-[LinkedIn ↗](https://linkedin.com/in/akram-naser) · [GitHub ↗](https://github.com/AkiTheLucky) · [Email ↗](mailto:Nase.Akram@gmail.com)
+[LinkedIn ↗](https://linkedin.com/in/akram-naser) · [GitHub ↗](https://github.com/AkiTheLucky)
 
 ## Portfolio
 
-- ![Glorfindel](/images/glorfindel.png) [Why Glorfindel is Impressive](blog/glorfindel/index.html) - An elegant exploration into lore analytics.
-- ![Majesty](/images/rivendell.png) [The Majesty of Worldbuilding](blog/majesty/index.html) - Immersive structures and design systems.
-- ![Tom](/images/tom.png) [Why Tom Bombadil Was a Mistake](blog/tom/index.html) - Custom parsing components and narrative tracks.
-- [Get In Touch](contact/index.html) - Let's connect and collaborate on code systems.
+- ![CVgenerator](/images/CV-generator-img.png) [Good CVs for free](blog/CV-generator/index.html) - ATS friendly and AI ready.
+- ![EXCELVBA](/images/EXCEL-VBA.png) [Excel VBA for interns](blog/EXCELVBA/index.html) - been there, done that
+- ![tbc](/images/tbc.png) [Working on more projects as we speak](blog/tbc/index.html) - never stop learning
+- [Get In Touch](contact/index.html) - Let's connect
