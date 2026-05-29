@@ -5,10 +5,127 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Akram Naser</title>
     <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" rel="stylesheet" />
-    <link href="/static_site_generator/index.css" rel="stylesheet" />
+    <link href="/index.css" rel="stylesheet" />
   </head>
 
   <body>
-    <article><div><h1>Akram Naser</h1><p>Learning how to code · Basel / Zürich</p><p>M.Sc. International Economics. Learning how to code stuff is fun. Give job pls.</p><p><a href="https://linkedin.com/in/akram-naser">LinkedIn ↗</a> · <a href="https://github.com/AkiTheLucky">GitHub ↗</a> · <a href="mailto:Nase.Akram@gmail.com">Email ↗</a></p></div></article>
+    <article id="markdown-content"><div><h1>Akram Naser</h1><p>Learning how to code · Basel / Zürich</p><p>M.Sc. International Economics. Learning how to code stuff is fun. Give job pls.</p><p><a href="https://linkedin.com/in/akram-naser">LinkedIn ↗</a> · <a href="https://github.com/AkiTheLucky">GitHub ↗</a> · <a href="mailto:Nase.Akram@gmail.com">Email ↗</a></p><h2>Portfolio</h2><ul><li><img src="/images/glorfindel.png" alt="Glorfindel"></img> <a href="blog/glorfindel/index.html">Why Glorfindel is Impressive</a> - An elegant exploration into lore analytics.</li><li><img src="/images/rivendell.png" alt="Majesty"></img> <a href="blog/majesty/index.html">The Majesty of Worldbuilding</a> - Immersive structures and design systems.</li><li><img src="/images/tom.png" alt="Tom"></img> <a href="blog/tom/index.html">Why Tom Bombadil Was a Mistake</a> - Custom parsing components and narrative tracks.</li><li><a href="contact/index.html">Get In Touch</a> - Let's connect and collaborate on code systems.</li></ul></div></article>
+
+    <div class="drawer-backdrop" id="drawer-backdrop"></div>
+    <div class="detail-drawer" id="detail-drawer">
+      <button class="drawer-close-btn" id="drawer-close">×</button>
+      <div class="drawer-content" id="drawer-body"></div>
+    </div>
+
+    <script>
+      const h1 = document.querySelector('h1');
+      const isHomePage = h1 && h1.textContent.includes('Akram Naser');
+
+      if (isHomePage) {
+        const article = document.getElementById('markdown-content');
+        const wrapperDiv = article.querySelector('div'); 
+        
+        article.style.display = 'none';
+
+        const anchor = document.createElement('div');
+        anchor.className = 'hero-anchor-container';
+        anchor.id = 'hero-anchor';
+        
+        if (wrapperDiv) {
+            let el = wrapperDiv.firstElementChild;
+            while (el && el.tagName !== 'H2') {
+                let next = el.nextElementSibling;
+                anchor.appendChild(el);
+                el = next;
+            }
+        }
+
+        const scene = document.createElement('div');
+        scene.className = 'parallax-scene';
+        const gallery = document.createElement('div');
+        gallery.className = 'parallax-gallery';
+        scene.appendChild(gallery);
+
+        const ul = article.querySelector('ul');
+        if (ul) {
+            const listItems = ul.querySelectorAll('li');
+            listItems.forEach((li, index) => {
+                const card = document.createElement('div');
+                card.className = 'project-card';
+                card.id = `card-${index + 1}`;
+                
+                const img = li.querySelector('img');
+                if (img) card.appendChild(img);
+
+                const a = li.querySelector('a');
+                let targetUrl = '';
+                if (a) {
+                    const h3 = document.createElement('h3');
+                    h3.textContent = a.textContent;
+                    card.appendChild(h3);
+                    targetUrl = a.getAttribute('href'); 
+                }
+
+                const p = document.createElement('p');
+                const cleanText = li.textContent.replace(a ? a.textContent : '', '').replace(/^[\s-]+/, '').trim();
+                p.textContent = cleanText;
+                if (cleanText) card.appendChild(p);
+
+                card.addEventListener('click', async () => {
+                    try {
+                        const response = await fetch(targetUrl);
+                        if (!response.ok) throw new Error("Fetch failed");
+                        
+                        const rawHtml = await response.text();
+                        const parser = new DOMParser();
+                        const fetchedArticle = parser.parseFromString(rawHtml, 'text/html').querySelector('article');
+                        
+                        // FIX: Use .outerHTML so the injected text keeps the <article> styling wrapper!
+                        document.getElementById('drawer-body').innerHTML = fetchedArticle ? fetchedArticle.outerHTML : rawHtml;
+                        
+                        // Open drawer and activate backdrop
+                        document.getElementById('detail-drawer').classList.add('open');
+                        document.getElementById('drawer-backdrop').classList.add('open');
+                        scene.classList.add('blur-background');
+                        anchor.classList.add('blur-background');
+                    } catch (err) {
+                        document.getElementById('drawer-body').innerHTML = `<h2>Error</h2><p>Could not load: ${targetUrl}</p>`;
+                        document.getElementById('detail-drawer').classList.add('open');
+                        document.getElementById('drawer-backdrop').classList.add('open');
+                    }
+                });
+
+                gallery.appendChild(card);
+            });
+        }
+
+        document.body.appendChild(scene);
+        document.body.appendChild(anchor);
+
+        window.addEventListener('mousemove', (e) => {
+          const xPercent = (e.clientX / window.innerWidth) - 0.5;
+          const yPercent = (e.clientY / window.innerHeight) - 0.5;
+          gallery.style.transform = `translateX(${xPercent * 35}px) translateY(${yPercent * 35}px) rotateX(${-yPercent * 12}deg) rotateY(${xPercent * 12}deg)`;
+        });
+      }
+
+      // Unified Close Logic
+      const resetInterface = () => {
+          document.getElementById('detail-drawer').classList.remove('open');
+          document.getElementById('drawer-backdrop').classList.remove('open');
+          const scene = document.querySelector('.parallax-scene');
+          const anchor = document.querySelector('.hero-anchor-container');
+          if (scene) scene.classList.remove('blur-background');
+          if (anchor) anchor.classList.remove('blur-background');
+      };
+
+      // Click 'X' to close
+      const closeBtn = document.getElementById('drawer-close');
+      if (closeBtn) closeBtn.addEventListener('click', resetInterface);
+      
+      // Click the blurred background to close
+      const backdrop = document.getElementById('drawer-backdrop');
+      if (backdrop) backdrop.addEventListener('click', resetInterface);
+    </script>
   </body>
 </html>
