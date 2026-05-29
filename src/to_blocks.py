@@ -19,11 +19,14 @@ class BlockType(Enum):
     QUOTE = "quote"
     UNORDERED_LIST = "unordered_list"
     ORDERED_LIST = "ordered_list"
+    HTML_BLOCK = "html_block" # <-- NEW
 
 def block_to_type(markdown):
+    if markdown.startswith("<"): # If it starts with an HTML tag
+        return BlockType.HTML_BLOCK
     if markdown.startswith(("# ","## ","### ","#### ","##### ","###### ",)):
         return BlockType.HEADING
-    if markdown.split("\n")[0].startswith("```") and markdown.split("\n")[-1].startswith("```"):
+    if markdown.strip().split("\n")[0].startswith("```") and markdown.strip().split("\n")[-1].startswith("```"):
         if len(markdown.split("\n")) > 1:
             return BlockType.CODE
     

@@ -3,7 +3,7 @@
 #imports
 from to_blocks import BlockType, block_to_type, markdown_to_blocks
 from textnode import TextNode, text_node_to_html_node, TextType
-from htmlnode import ParentNode
+from htmlnode import ParentNode, LeafNode
 from regx_and_to_TextNode import text_to_textnodes
 
 
@@ -16,6 +16,9 @@ def markdown_to_html_node(markdown):
         #check each type of block: 1. check for heading and pass to heading helper function
         if block_type == BlockType.HEADING:
             children.append(heading_to_html_node(block))
+
+        elif block_type == BlockType.HTML_BLOCK:
+            children.append(html_to_html_node(block))
 
         elif block_type == BlockType.PARAGRAPH:
             children.append(paragraph_to_html_node(block))
@@ -144,3 +147,8 @@ def text_to_children(text):
         children.append( text_node_to_html_node(textynode))
     return children
 
+# 3. Add the pass-through logic at the bottom of the file
+def html_to_html_node(block):
+    # Returning a LeafNode with no tag allows the raw HTML string 
+    # to render into the final file without being escaped or wrapped in <p>
+    return LeafNode(None, block)
