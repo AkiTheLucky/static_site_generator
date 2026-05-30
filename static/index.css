@@ -73,10 +73,10 @@ article img { max-width: 100%; border-radius: 8px; margin: 1rem 0; }
   transition: box-shadow 0.4s ease, transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-#card-1 { top: 15%; left: 8%; transform: rotateY(20deg) translateZ(-100px); animation-delay: 0.1s; }
-#card-2 { top: 15%; right: 8%; transform: rotateY(-20deg) translateZ(-100px); animation-delay: 0.2s; }
-#card-3 { bottom: 12%; left: 14%; transform: rotateY(28deg) translateZ(-250px); animation-delay: 0.3s; }
-#card-4 { bottom: 12%; right: 14%; transform: rotateY(-28deg) translateZ(-250px); animation-delay: 0.4s; }
+#card-1 { top: 16%; left: 20%; transform: rotateY(20deg) translateZ(-100px); animation-delay: 0.1s; }
+#card-2 { top: 20%; right: 20%; transform: rotateY(-20deg) translateZ(-100px); animation-delay: 0.2s; }
+#card-3 { bottom: 16%; left: 24%; transform: rotateY(28deg) translateZ(-250px); animation-delay: 0.3s; }
+#card-4 { bottom: 24%; right: 24%; transform: rotateY(-28deg) translateZ(-250px); animation-delay: 0.4s; }
 
 #card-1:hover { transform: rotateY(5deg) translateZ(80px) scale(1.05) !important; box-shadow: 0 30px 60px rgba(0,0,0,0.08); }
 #card-2:hover { transform: rotateY(-5deg) translateZ(80px) scale(1.05) !important; box-shadow: 0 30px 60px rgba(0,0,0,0.08); }
@@ -131,3 +131,95 @@ article img { max-width: 100%; border-radius: 8px; margin: 1rem 0; }
 
 .drawer-close-btn { background: none; border: none; font-size: 1.5rem; cursor: pointer; float: right; margin-top: -10px; }
 .blur-background { filter: blur(12px); opacity: 0.2; pointer-events: none; }
+
+/* =========================================
+   MOBILE 3D CAROUSEL (Hidden on PC)
+   ========================================= */
+.carousel-scene {
+  display: none; /* Hidden by default */
+}
+
+/* When the screen is 768px or smaller (Tablets/Phones) */
+@media screen and (max-width: 768px) {
+  .parallax-scene { 
+    display: none !important; 
+  }
+  
+  /* 1. Push the hero card to the top of the screen */
+  #hero-anchor {
+    top: 8vh !important;
+    transform: translate(-50%, 0) !important;
+  }
+  
+  /* 2. Shift the carousel down below the hero card */
+  .carousel-scene {
+    position: fixed; 
+    top: 20vh; /* Moved down */
+    left: 0; 
+    width: 100vw; 
+    height: 80vh; /* Fills the remaining space */
+    z-index: 1; 
+    perspective: 1200px;
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    overflow: hidden; 
+    transition: filter 0.5s ease;
+    touch-action: none; 
+  }
+
+  /* 3. The Infinite Spin Animation for the Group */
+  @keyframes spinSilo {
+    from { transform: translateZ(-200px) scale(0.85) rotateY(0deg); }
+    to   { transform: translateZ(-200px) scale(0.85) rotateY(-360deg); }
+  }
+
+  .carousel-group {
+    position: relative; width: 280px; height: 350px;
+    transform-style: preserve-3d;
+    will-change: transform;
+    animation: spinSilo 15s linear infinite; 
+  }
+
+  /* 4. Strip away desktop positioning */
+  .project-card {
+    top: 0 !important; 
+    left: 0 !important; 
+    bottom: auto !important; 
+    right: auto !important;
+    margin: 0 !important;
+    opacity: 1 !important; 
+    backface-visibility: hidden; 
+  }
+
+  /* 5. Create Counter-Spins for each card */
+  /* The first rotateY is their position on the circle, the second rotateY cancels the group spin */
+  @keyframes counterSpin1 { 
+    from { transform: rotateY(0deg) translateZ(160px) rotateY(0deg); } 
+    to   { transform: rotateY(0deg) translateZ(160px) rotateY(360deg); } 
+  }
+  @keyframes counterSpin2 { 
+    from { transform: rotateY(90deg) translateZ(160px) rotateY(0deg); } 
+    to   { transform: rotateY(90deg) translateZ(160px) rotateY(360deg); } 
+  }
+  @keyframes counterSpin3 { 
+    from { transform: rotateY(180deg) translateZ(160px) rotateY(0deg); } 
+    to   { transform: rotateY(180deg) translateZ(160px) rotateY(360deg); } 
+  }
+  @keyframes counterSpin4 { 
+    from { transform: rotateY(270deg) translateZ(160px) rotateY(0deg); } 
+    to   { transform: rotateY(270deg) translateZ(160px) rotateY(360deg); } 
+  }
+
+  /* 6. Apply the animations to the cards */
+  #card-1 { animation: counterSpin1 15s linear infinite !important; }
+  #card-2 { animation: counterSpin2 15s linear infinite !important; }
+  #card-3 { animation: counterSpin3 15s linear infinite !important; }
+  #card-4 { animation: counterSpin4 15s linear infinite !important; }
+
+  /* 7. Pause EVERYTHING when the user touches it */
+  .carousel-group:active,
+  .carousel-group:active .project-card {
+    animation-play-state: paused !important;
+  }
+}
